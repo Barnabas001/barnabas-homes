@@ -1,11 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
+interface Property {
+  id: string;
+  title: string;
+  city: string;
+  price: number;
+  bedrooms: number;
+  propertyType: string;
+  address: string;
+  images: string[];
+  phoneNumber: string;
+  whatsappNumber: string;
+  description?: string;
+  bathrooms?: number;
+  isFeatured?: boolean;
+}
 
 interface PostPropertyFormProps {
   onClose: () => void;
-  onSubmit: (property: any) => void;
+  onSubmit: (property: Property) => void;
+  editingProperty?: Property | null;
 }
 
-function PostPropertyForm({ onClose, onSubmit }: PostPropertyFormProps) {
+function PostPropertyForm({
+  onClose,
+  onSubmit,
+  editingProperty = null,
+}: PostPropertyFormProps) {
   const [formData, setFormData] = useState({
     title: "",
     city: "",
@@ -18,6 +39,27 @@ function PostPropertyForm({ onClose, onSubmit }: PostPropertyFormProps) {
     phoneNumber: "",
     whatsappNumber: "",
   });
+
+  // Populate form if editing
+  useEffect(() => {
+    if (editingProperty) {
+      setFormData({
+        title: editingProperty.title,
+        city: editingProperty.city,
+        price: editingProperty.price.toString(),
+        bedrooms: editingProperty.bedrooms.toString(),
+        bathrooms: editingProperty.bathrooms?.toString() || "",
+        propertyType: editingProperty.propertyType,
+        address: editingProperty.address,
+        description: editingProperty.description || "",
+        phoneNumber: editingProperty.phoneNumber,
+        whatsappNumber: editingProperty.whatsappNumber,
+      });
+      setImageURLs(
+        editingProperty.images.length > 0 ? editingProperty.images : [""],
+      );
+    }
+  }, [editingProperty]);
 
   const [imageURLs, setImageURLs] = useState<string[]>([""]);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -94,7 +136,7 @@ function PostPropertyForm({ onClose, onSubmit }: PostPropertyFormProps) {
     const validImages = imageURLs.filter((url) => url.trim() !== "");
 
     const newProperty = {
-      id: Date.now().toString(),
+      id: editingProperty ? editingProperty.id : Date.now().toString(),
       title: formData.title,
       city: formData.city,
       price: parseInt(formData.price),
@@ -106,6 +148,7 @@ function PostPropertyForm({ onClose, onSubmit }: PostPropertyFormProps) {
       phoneNumber: formData.phoneNumber,
       whatsappNumber: formData.whatsappNumber,
       images: validImages,
+      isFeatured: editingProperty?.isFeatured || false,
     };
 
     onSubmit(newProperty);
@@ -119,7 +162,7 @@ function PostPropertyForm({ onClose, onSubmit }: PostPropertyFormProps) {
           {/* Header */}
           <div className="flex justify-between items-center p-6 border-b">
             <h2 className="text-2xl font-bold text-gray-800">
-              Post a Property
+              {editingProperty ? "Edit Property" : "Post a Property"}
             </h2>
             <button
               onClick={onClose}
@@ -400,7 +443,7 @@ function PostPropertyForm({ onClose, onSubmit }: PostPropertyFormProps) {
                 type="submit"
                 className="flex-1 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium"
               >
-                Post Property
+                {editingProperty ? "Update Property" : "Post Property"}
               </button>
             </div>
           </form>

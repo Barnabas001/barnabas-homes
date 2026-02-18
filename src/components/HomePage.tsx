@@ -4,6 +4,7 @@ import SearchSection from "./SearchSection";
 import PropertyGrid from "./PropertyGrid";
 import PropertyDetail from "./PropertyDetail";
 import PostPropertyForm from "./PostPropertyForm";
+import MyProperties from "./MyProperties";
 import Footer from "./Footer";
 
 interface Property {
@@ -33,6 +34,8 @@ function HomePage() {
     null,
   );
   const [showPostForm, setShowPostForm] = useState(false);
+  const [showMyProperties, setShowMyProperties] = useState(false);
+  const [editingProperty, setEditingProperty] = useState<Property | null>(null);
 
   // State for properties (with localStorage)
   const [properties, setProperties] = useState<Property[]>([]);
@@ -59,6 +62,7 @@ function HomePage() {
           whatsappNumber: "2348012345678",
           description:
             "Beautiful 2 bedroom apartment in a serene environment. Features include constant water supply, 24/7 security, and easy access to major roads.",
+          isFeatured: false,
         },
         {
           id: "2",
@@ -74,6 +78,7 @@ function HomePage() {
           whatsappNumber: "2348087654321",
           description:
             "Spacious 3 bedroom detached house with modern amenities. Includes a garden, parking space, and proximity to shopping centers.",
+          isFeatured: true,
         },
         {
           id: "3",
@@ -89,6 +94,7 @@ function HomePage() {
           whatsappNumber: "2348098765432",
           description:
             "Cozy studio apartment perfect for students or young professionals. Close to University of Ibadan and major transport routes.",
+          isFeatured: false,
         },
       ];
       setProperties(sampleProperties);
@@ -99,19 +105,8 @@ function HomePage() {
     }
   }, []);
 
-  // Filter properties based on search criteria
-  const filteredProperties = properties.filter((property) => {
-    const cityMatch = !searchCity || property.city === searchCity;
-    const priceMatch = !maxPrice || property.price <= parseInt(maxPrice);
-    const bedroomsMatch =
-      !minBedrooms || property.bedrooms >= parseInt(minBedrooms);
-
-    return cityMatch && priceMatch && bedroomsMatch;
-  });
-
-  // Handle new property submission
-  function handlePropertySubmit(newProperty: Property) {
-    const updatedProperties = [...properties, newProperty];
+  // Save to localStorage whenever properties change
+  function saveProperties(updatedProperties: Property[]) {
     setProperties(updatedProperties);
     localStorage.setItem(
       "barnabasHomes_properties",
@@ -119,12 +114,71 @@ function HomePage() {
     );
   }
 
+  // Filter properties based on search criteria
+  // Featured properties should appear first
+  const filteredProperties = properties
+    .filter((property) => {
+      const cityMatch = !searchCity || property.city === searchCity;
+      const priceMatch = !maxPrice || property.price <= parseInt(maxPrice);
+      const bedroomsMatch =
+        !minBedrooms || property.bedrooms >= parseInt(minBedrooms);
+
+      return cityMatch && priceMatch && bedroomsMatch;
+    })
+    .sort((a, b) => {
+      // Featured properties first
+      if (a.isFeatured && !b.isFeatured) return -1;
+      if (!a.isFeatured && b.isFeatured) return 1;
+      return 0;
+    });
+
+  // Handle new property submission
+  function handlePropertySubmit(propertyData: Property) {
+    if (editingProperty) {
+      // Update existing property
+      const updatedProperties = properties.map((p) =>
+        p.id === propertyData.id ? propertyData : p,
+      );
+      saveProperties(updatedProperties);
+    } else {
+      // Add new property
+      const updatedProperties = [...properties, propertyData];
+      saveProperties(updatedProperties);
+    }
+    setEditingProperty(null);
+  }
+
+  // Handle property deletion
+  function handleDeleteProperty(propertyId: string) {
+    const updatedProperties = properties.filter((p) => p.id !== propertyId);
+    saveProperties(updatedProperties);
+  }
+
+  // Handle toggle featured status
+  function handleToggleFeatured(propertyId: string) {
+    const updatedProperties = properties.map((p) =>
+      p.id === propertyId ? { ...p, isFeatured: !p.isFeatured } : p,
+    );
+    saveProperties(updatedProperties);
+  }
+
+  // Handle edit property
+  function handleEditProperty(property: Property) {
+    setEditingProperty(property);
+    setShowMyProperties(false);
+    setShowPostForm(true);
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header
-        onPostPropertyClick={() => setShowPostForm(true)}
-        onMyPropertiesClick={() => {}}
+        onPostPropertyClick={() => {
+          setEditingProperty(null);
+          setShowPostForm(true);
+        }}
+        onMyPropertiesClick={() => setShowMyProperties(true)}
       />
+
       <SearchSection
         searchCity={searchCity}
         maxPrice={maxPrice}
@@ -159,8 +213,22 @@ function HomePage() {
 
       {showPostForm && (
         <PostPropertyForm
-          onClose={() => setShowPostForm(false)}
+          onClose={() => {
+            setShowPostForm(false);
+            setEditingProperty(null);
+          }}
           onSubmit={handlePropertySubmit}
+          editingProperty={editingProperty}
+        />
+      )}
+
+      {showMyProperties && (
+        <MyProperties
+          properties={properties}
+          onEdit={handleEditProperty}
+          onDelete={handleDeleteProperty}
+          onToggleFeatured={handleToggleFeatured}
+          onClose={() => setShowMyProperties(false)}
         />
       )}
     </div>
