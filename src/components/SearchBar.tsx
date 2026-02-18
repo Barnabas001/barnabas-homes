@@ -18,14 +18,14 @@ function SearchBar({
   onMinBedroomsChange,
 }: SearchBarProps) {
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 max-w-4xl mx-auto">
+    <div className="bg-white rounded-2xl shadow-2xl p-6">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div>
-          <label className="block text-gray-700 text-sm font-medium mb-2 text-left">
-            City
+          <label className="block text-gray-700 text-sm font-semibold mb-2">
+            Location
           </label>
           <select
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-600"
+            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-gray-700 focus:outline-none focus:border-green-600 transition"
             value={searchCity}
             onChange={(e) => onSearchCityChange(e.target.value)}
           >
@@ -36,24 +36,24 @@ function SearchBar({
         </div>
 
         <div>
-          <label className="block text-gray-700 text-sm font-medium mb-2 text-left">
+          <label className="block text-gray-700 text-sm font-semibold mb-2">
             Max Price
           </label>
           <input
             type="number"
-            placeholder="₦ Max Price"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-600"
+            placeholder="Any price"
+            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-gray-700 focus:outline-none focus:border-green-600 transition"
             value={maxPrice}
             onChange={(e) => onMaxPriceChange(e.target.value)}
           />
         </div>
 
         <div>
-          <label className="block text-gray-700 text-sm font-medium mb-2 text-left">
-            Min Bedrooms
+          <label className="block text-gray-700 text-sm font-semibold mb-2">
+            Bedrooms
           </label>
           <select
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-600"
+            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-gray-700 focus:outline-none focus:border-green-600 transition"
             value={minBedrooms}
             onChange={(e) => onMinBedroomsChange(e.target.value)}
           >
@@ -66,7 +66,7 @@ function SearchBar({
         </div>
 
         <div className="flex items-end">
-          <button className="w-full bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition font-medium">
+          <button className="w-full bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition font-semibold text-lg shadow-lg">
             Search
           </button>
         </div>
