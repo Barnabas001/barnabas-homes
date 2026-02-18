@@ -120,8 +120,10 @@ function HomePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header onPostPropertyClick={() => setShowPostForm(true)} />
-
+      <Header
+        onPostPropertyClick={() => setShowPostForm(true)}
+        onMyPropertiesClick={() => {}}
+      />
       <SearchSection
         searchCity={searchCity}
         maxPrice={maxPrice}
