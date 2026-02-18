@@ -43,10 +43,12 @@ export default function HomePage() {
 
   // Load properties from localStorage on mount
   useEffect(() => {
+    const DATA_VERSION = "v2"; // Increment this whenever you change sample data
+    const savedVersion = localStorage.getItem("barnabasHomes_dataVersion");
     const savedProperties = localStorage.getItem("barnabasHomes_properties");
-    if (savedProperties) {
-      setProperties(JSON.parse(savedProperties));
-    } else {
+
+    // If version changed or no data, reload sample data
+    if (savedVersion !== DATA_VERSION || !savedProperties) {
       // Initialize with sample data if nothing in storage
       const sampleProperties: Property[] = [
         {
@@ -109,6 +111,7 @@ export default function HomePage() {
         "barnabasHomes_properties",
         JSON.stringify(sampleProperties),
       );
+      localStorage.setItem("barnabasHomes_dataVersion", DATA_VERSION);
     }
   }, []);
 
