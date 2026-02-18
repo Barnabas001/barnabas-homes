@@ -9,7 +9,7 @@ interface SearchBarProps {
   onMinBedroomsChange: (bedrooms: string) => void;
 }
 
-function SearchBar({
+export default function SearchBar({
   searchCity,
   maxPrice,
   minBedrooms,
@@ -74,5 +74,3 @@ function SearchBar({
     </div>
   );
 }
-
-export default SearchBar;

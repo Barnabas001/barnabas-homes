@@ -21,7 +21,10 @@ interface PropertyGridProps {
   onViewDetails: (property: Property) => void;
 }
 
-function PropertyGrid({ properties, onViewDetails }: PropertyGridProps) {
+export default function PropertyGrid({
+  properties,
+  onViewDetails,
+}: PropertyGridProps) {
   if (properties.length === 0) {
     return (
       <div className="text-center py-12">
@@ -44,5 +47,3 @@ function PropertyGrid({ properties, onViewDetails }: PropertyGridProps) {
     </div>
   );
 }
-
-export default PropertyGrid;

@@ -21,7 +21,10 @@ interface PropertyCardProps {
   onViewDetails: (property: Property) => void;
 }
 
-function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
+export default function PropertyCard({
+  property,
+  onViewDetails,
+}: PropertyCardProps) {
   function formatPrice(price: number) {
     return `₦${price.toLocaleString()}/year`;
   }
@@ -80,5 +83,3 @@ function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
     </div>
   );
 }
-
-export default PropertyCard;

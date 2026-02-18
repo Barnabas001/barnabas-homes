@@ -22,7 +22,7 @@ interface PostPropertyFormProps {
   editingProperty?: Property | null;
 }
 
-function PostPropertyForm({
+export default function PostPropertyForm({
   onClose,
   onSubmit,
   editingProperty = null,
@@ -452,5 +452,3 @@ function PostPropertyForm({
     </div>
   );
 }
-
-export default PostPropertyForm;

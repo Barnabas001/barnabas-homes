@@ -24,7 +24,7 @@ interface Property {
   isFeatured?: boolean;
 }
 
-function HomePage() {
+export default function HomePage() {
   // State for search filters
   const [searchCity, setSearchCity] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
@@ -237,5 +237,3 @@ function HomePage() {
     </div>
   );
 }
-
-export default HomePage;

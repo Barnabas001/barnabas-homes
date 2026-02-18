@@ -4,7 +4,7 @@ interface StatsSectionProps {
   totalProperties: number;
 }
 
-function StatsSection({ totalProperties }: StatsSectionProps) {
+export default function StatsSection({ totalProperties }: StatsSectionProps) {
   return (
     <section className="bg-green-50 py-12">
       <div className="max-w-7xl mx-auto px-4">
@@ -32,5 +32,3 @@ function StatsSection({ totalProperties }: StatsSectionProps) {
     </section>
   );
 }
-
-export default StatsSection;

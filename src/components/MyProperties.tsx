@@ -24,7 +24,7 @@ interface MyPropertiesProps {
   onClose: () => void;
 }
 
-function MyProperties({
+export default function MyProperties({
   properties,
   onEdit,
   onDelete,
@@ -148,5 +148,3 @@ function MyProperties({
     </div>
   );
 }
-
-export default MyProperties;

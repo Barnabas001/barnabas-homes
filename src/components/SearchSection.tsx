@@ -10,7 +10,7 @@ interface SearchSectionProps {
   onMinBedroomsChange: (bedrooms: string) => void;
 }
 
-function SearchSection({
+export default function SearchSection({
   searchCity,
   maxPrice,
   minBedrooms,
@@ -73,5 +73,3 @@ function SearchSection({
     </section>
   );
 }
-
-export default SearchSection;
