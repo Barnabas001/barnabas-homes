@@ -31,7 +31,7 @@ function PropertyCard({ property, onViewDetails }: PropertyCardProps) {
       {/* Property Image */}
       <div className="relative h-56 bg-gray-200 overflow-hidden">
         <img
-          src={property.images[0]}
+          src={property.images?.[0]}
           alt={property.title}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
         />
