@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import SearchSection from "./SearchSection";
+import StatsSection from "./StatsSection";
 import PropertyGrid from "./PropertyGrid";
 import PropertyDetail from "./PropertyDetail";
 import PostPropertyForm from "./PostPropertyForm";
@@ -57,7 +58,9 @@ function HomePage() {
           bathrooms: 2,
           propertyType: "Apartment",
           address: "Bodija Estate, Ibadan, Oyo State",
-          images: ["https://via.placeholder.com/400x300?text=Property+1"],
+          images: [
+            "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Crect width='800' height='600' fill='%23e8f5e9'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='48' fill='%232e7d32'%3E2 Bedroom Apartment%3C/text%3E%3Ctext x='50%25' y='60%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='32' fill='%23558b2f'%3EBodija, Ibadan%3C/text%3E%3C/svg%3E",
+          ],
           phoneNumber: "08012345678",
           whatsappNumber: "2348012345678",
           description:
@@ -73,7 +76,9 @@ function HomePage() {
           bathrooms: 3,
           propertyType: "House",
           address: "Lekki Phase 1, Lagos State",
-          images: ["https://via.placeholder.com/400x300?text=Property+2"],
+          images: [
+            "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Crect width='800' height='600' fill='%23e3f2fd'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='48' fill='%231565c0'%3E3 Bedroom House%3C/text%3E%3Ctext x='50%25' y='60%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='32' fill='%231976d2'%3ELekki, Lagos%3C/text%3E%3C/svg%3E",
+          ],
           phoneNumber: "08087654321",
           whatsappNumber: "2348087654321",
           description:
@@ -89,7 +94,9 @@ function HomePage() {
           bathrooms: 1,
           propertyType: "Apartment",
           address: "Mokola, Ibadan, Oyo State",
-          images: ["https://via.placeholder.com/400x300?text=Property+3"],
+          images: [
+            "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Crect width='800' height='600' fill='%23fff3e0'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='48' fill='%23f57c00'%3EStudio Apartment%3C/text%3E%3Ctext x='50%25' y='60%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='32' fill='%23fb8c00'%3EMokola, Ibadan%3C/text%3E%3C/svg%3E",
+          ],
           phoneNumber: "08098765432",
           whatsappNumber: "2348098765432",
           description:
@@ -187,6 +194,8 @@ function HomePage() {
         onMaxPriceChange={setMaxPrice}
         onMinBedroomsChange={setMinBedrooms}
       />
+
+      <StatsSection totalProperties={properties.length} />
 
       <section className="max-w-7xl mx-auto px-4 py-12">
         <h3 className="text-2xl font-bold text-gray-800 mb-6">
