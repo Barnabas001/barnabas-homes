@@ -58,7 +58,9 @@ export default function HomePage() {
           bathrooms: 2,
           propertyType: "Apartment",
           address: "Bodija Estate, Ibadan, Oyo State",
-          images: ["https://picsum.photos/seed/house1/800/600"],
+          images: [
+            "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8aG91c2V8ZW58MHx8MHx8fDA%3D",
+          ],
           phoneNumber: "08012345678",
           whatsappNumber: "2348012345678",
           description:
@@ -74,7 +76,9 @@ export default function HomePage() {
           bathrooms: 3,
           propertyType: "House",
           address: "Lekki Phase 1, Lagos State",
-          images: ["https://picsum.photos/seed/house2/800/600"],
+          images: [
+            "https://plus.unsplash.com/premium_photo-1689609950112-d66095626efb?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG91c2V8ZW58MHx8MHx8fDA%3D",
+          ],
           phoneNumber: "08087654321",
           whatsappNumber: "2348087654321",
           description:
@@ -90,7 +94,9 @@ export default function HomePage() {
           bathrooms: 1,
           propertyType: "Apartment",
           address: "Mokola, Ibadan, Oyo State",
-          images: ["https://picsum.photos/seed/apartment1/800/600"],
+          images: [
+            "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aG91c2V8ZW58MHx8MHx8fDA%3D",
+          ],
           phoneNumber: "08098765432",
           whatsappNumber: "2348098765432",
           description:
