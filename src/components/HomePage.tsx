@@ -19,6 +19,7 @@ interface Property {
   whatsappNumber: string;
   description?: string;
   bathrooms?: number;
+  isFeatured?: boolean;
 }
 
 function HomePage() {
