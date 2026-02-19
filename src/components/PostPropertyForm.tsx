@@ -119,8 +119,24 @@ export default function PostPropertyForm({
       newErrors.whatsappNumber = "WhatsApp number is required";
 
     const validImages = imageURLs.filter((url) => url.trim() !== "");
-    if (validImages.length === 0)
+    if (validImages.length === 0) {
       newErrors.images = "At least one image URL is required";
+    } else {
+      // Check if URLs are valid
+      const invalidURLs = validImages.filter((url) => {
+        try {
+          new URL(url);
+          return false;
+        } catch {
+          return true;
+        }
+      });
+
+      if (invalidURLs.length > 0) {
+        newErrors.images =
+          "Please enter valid image URLs (must start with http:// or https://)";
+      }
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -354,7 +370,7 @@ export default function PostPropertyForm({
                     onChange={(e) =>
                       handleImageURLChange(index, e.target.value)
                     }
-                    placeholder="https://example.com/image.jpg"
+                    placeholder="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800"
                     className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
                   />
                   {imageURLs.length > 1 && (
@@ -374,6 +390,26 @@ export default function PostPropertyForm({
                   onClick={addImageURL}
                   className="text-green-600 hover:text-green-700 font-medium"
                 >
+                  <p className="text-sm text-gray-600 mb-2">
+                    💡 Tip: Get free property images from{" "}
+                    <a
+                      href="https://unsplash.com/s/photos/house"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-green-600 hover:underline"
+                    >
+                      Unsplash
+                    </a>{" "}
+                    or{" "}
+                    <a
+                      href="https://www.pexels.com/search/apartment/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-green-600 hover:underline"
+                    >
+                      Pexels
+                    </a>
+                  </p>
                   + Add Another Image (Max 6)
                 </button>
               )}

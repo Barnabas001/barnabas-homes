@@ -43,13 +43,13 @@ export default function HomePage() {
 
   // Load properties from localStorage on mount
   useEffect(() => {
-    const DATA_VERSION = "v2"; // Increment this whenever you change sample data
+    const DATA_VERSION = "v3"; // Changed to v3
     const savedVersion = localStorage.getItem("barnabasHomes_dataVersion");
     const savedProperties = localStorage.getItem("barnabasHomes_properties");
 
-    // If version changed or no data, reload sample data
-    if (savedVersion !== DATA_VERSION || !savedProperties) {
-      // Initialize with sample data if nothing in storage
+    // Always load fresh sample data if version doesn't match
+    if (savedVersion !== DATA_VERSION) {
+      console.log("Loading fresh sample data due to version change");
       const sampleProperties: Property[] = [
         {
           id: "1",
@@ -61,7 +61,7 @@ export default function HomePage() {
           propertyType: "Apartment",
           address: "Bodija Estate, Ibadan, Oyo State",
           images: [
-            "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8aG91c2V8ZW58MHx8MHx8fDA%3D",
+            "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
           ],
           phoneNumber: "08012345678",
           whatsappNumber: "2348012345678",
@@ -79,7 +79,7 @@ export default function HomePage() {
           propertyType: "House",
           address: "Lekki Phase 1, Lagos State",
           images: [
-            "https://plus.unsplash.com/premium_photo-1689609950112-d66095626efb?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG91c2V8ZW58MHx8MHx8fDA%3D",
+            "https://plus.unsplash.com/premium_photo-1689609950112-d66095626efb?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
           ],
           phoneNumber: "08087654321",
           whatsappNumber: "2348087654321",
@@ -97,7 +97,7 @@ export default function HomePage() {
           propertyType: "Apartment",
           address: "Mokola, Ibadan, Oyo State",
           images: [
-            "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aG91c2V8ZW58MHx8MHx8fDA%3D",
+            "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
           ],
           phoneNumber: "08098765432",
           whatsappNumber: "2348098765432",
@@ -106,12 +106,25 @@ export default function HomePage() {
           isFeatured: false,
         },
       ];
+
       setProperties(sampleProperties);
       localStorage.setItem(
         "barnabasHomes_properties",
         JSON.stringify(sampleProperties),
       );
       localStorage.setItem("barnabasHomes_dataVersion", DATA_VERSION);
+    } else if (savedProperties) {
+      // Load saved properties if version matches
+      console.log("Loading saved properties from localStorage");
+      const parsed = JSON.parse(savedProperties);
+
+      // Filter out properties with invalid images
+      const validProperties = parsed.filter(
+        (p: Property) =>
+          p.images && p.images.length > 0 && p.images[0].trim() !== "",
+      );
+
+      setProperties(validProperties);
     }
   }, []);
 

@@ -1,5 +1,6 @@
 import React from "react";
 import PropertyCard from "./PropertyCard";
+import ScrollReveal from "./ScrollReveal";
 
 interface Property {
   id: string;
@@ -14,6 +15,7 @@ interface Property {
   whatsappNumber: string;
   description?: string;
   bathrooms?: number;
+  isFeatured?: boolean;
 }
 
 interface PropertyGridProps {
@@ -37,12 +39,10 @@ export default function PropertyGrid({
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {properties.map((property) => (
-        <PropertyCard
-          key={property.id}
-          property={property}
-          onViewDetails={onViewDetails}
-        />
+      {properties.map((property, index) => (
+        <ScrollReveal key={property.id} delay={index * 100}>
+          <PropertyCard property={property} onViewDetails={onViewDetails} />
+        </ScrollReveal>
       ))}
     </div>
   );
