@@ -42,9 +42,16 @@ export default function SearchBar({
           <input
             type="number"
             placeholder="Any price"
+            min="0"
+            step="10000"
             className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-gray-700 focus:outline-none focus:border-green-600 transition"
             value={maxPrice}
-            onChange={(e) => onMaxPriceChange(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (value === "" || parseInt(value) >= 0) {
+                onMaxPriceChange(value);
+              }
+            }}
           />
         </div>
 
