@@ -23,7 +23,7 @@ interface PropertyCardProps {
   onToggleFavorite?: (propertyId: string) => void;
 }
 
-function PropertyCard({
+export default function PropertyCard({
   property,
   onViewDetails,
   isFavorited = false,
@@ -114,5 +114,3 @@ function PropertyCard({
     </div>
   );
 }
-
-export default PropertyCard;
