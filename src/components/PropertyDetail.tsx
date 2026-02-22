@@ -18,10 +18,10 @@ interface PropertyDetailProps {
   onClose: () => void;
 }
 
-const PropertyDetail: React.FC<PropertyDetailProps> = ({
+export default function PropertyDetail({
   property,
   onClose,
-}) => {
+}: PropertyDetailProps) {
   const formatPrice = (price: number) => {
     return `₦${price.toLocaleString()}/year`;
   };
@@ -127,6 +127,4 @@ const PropertyDetail: React.FC<PropertyDetailProps> = ({
       </div>
     </div>
   );
-};
-
-export default PropertyDetail;
+}

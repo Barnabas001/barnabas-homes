@@ -25,7 +25,7 @@ interface PropertyGridProps {
   onToggleFavorite?: (propertyId: string) => void;
 }
 
-function PropertyGrid({
+export default function PropertyGrid({
   properties,
   onViewDetails,
   favorites = [],
@@ -56,5 +56,3 @@ function PropertyGrid({
     </div>
   );
 }
-
-export default PropertyGrid;
