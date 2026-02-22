@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 
 interface Property {
   id: string;
@@ -29,6 +30,8 @@ export default function PropertyCard({
   isFavorited = false,
   onToggleFavorite,
 }: PropertyCardProps) {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   function formatPrice(price: number) {
     return `₦${price.toLocaleString()}/year`;
   }
@@ -36,47 +39,21 @@ export default function PropertyCard({
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-2xl transition-all duration-300 cursor-pointer group">
       {/* Property Image */}
+
+      {/* // In the image div: */}
       <div className="relative h-56 bg-gray-200 overflow-hidden">
+        {!imageLoaded && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+            <div className="animate-pulse text-gray-400">Loading...</div>
+          </div>
+        )}
         <img
           src={property.images[0]}
           alt={property.title}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+          className={`w-full h-full object-cover group-hover:scale-110 transition-transform duration-300 ${imageLoaded ? "opacity-100" : "opacity-0"}`}
+          onLoad={() => setImageLoaded(true)}
         />
-
-        {/* Top row: Favorite + Featured */}
-        <div className="absolute top-3 left-3 right-3 flex justify-between items-start">
-          {/* Favorite button */}
-          {onToggleFavorite && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onToggleFavorite(property.id);
-              }}
-              className="bg-white rounded-full p-2 shadow-lg hover:scale-110 transition-transform"
-              aria-label={
-                isFavorited ? "Remove from favorites" : "Add to favorites"
-              }
-            >
-              {isFavorited ? (
-                <span className="text-xl">❤️</span>
-              ) : (
-                <span className="text-xl">🤍</span>
-              )}
-            </button>
-          )}
-
-          {/* Featured badge */}
-          {property.isFeatured && (
-            <div className="bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-sm font-bold shadow-lg">
-              ⭐ Featured
-            </div>
-          )}
-        </div>
-
-        {/* Bottom: Property type */}
-        <div className="absolute bottom-3 left-3 bg-white px-3 py-1 rounded-full text-sm font-semibold text-gray-700 shadow-md">
-          {property.propertyType}
-        </div>
+        {/* rest of code */}
       </div>
 
       {/* Property Details */}
