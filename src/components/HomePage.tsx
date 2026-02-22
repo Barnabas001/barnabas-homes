@@ -6,6 +6,7 @@ import PropertyGrid from "./PropertyGrid";
 import PropertyDetail from "./PropertyDetail";
 import PostPropertyForm from "./PostPropertyForm";
 import MyProperties from "./MyProperties";
+import MyFavorites from "./MyFavorites";
 import Footer from "./Footer";
 
 interface Property {
@@ -37,17 +38,25 @@ export default function HomePage() {
   const [showPostForm, setShowPostForm] = useState(false);
   const [showMyProperties, setShowMyProperties] = useState(false);
   const [editingProperty, setEditingProperty] = useState<Property | null>(null);
+  const [showFavorites, setShowFavorites] = useState(false);
 
-  // State for properties (with localStorage)
+  // State for properties and favorites
   const [properties, setProperties] = useState<Property[]>([]);
+  const [favorites, setFavorites] = useState<string[]>([]);
 
-  // Load properties from localStorage on mount
+  // Load properties and favorites from localStorage on mount
   useEffect(() => {
-    const DATA_VERSION = "v3"; // Changed to v3
+    const DATA_VERSION = "v3";
     const savedVersion = localStorage.getItem("barnabasHomes_dataVersion");
     const savedProperties = localStorage.getItem("barnabasHomes_properties");
+    const savedFavorites = localStorage.getItem("barnabasHomes_favorites");
 
-    // Always load fresh sample data if version doesn't match
+    // Load favorites
+    if (savedFavorites) {
+      setFavorites(JSON.parse(savedFavorites));
+    }
+
+    // Load properties
     if (savedVersion !== DATA_VERSION) {
       console.log("Loading fresh sample data due to version change");
       const sampleProperties: Property[] = [
@@ -114,21 +123,17 @@ export default function HomePage() {
       );
       localStorage.setItem("barnabasHomes_dataVersion", DATA_VERSION);
     } else if (savedProperties) {
-      // Load saved properties if version matches
       console.log("Loading saved properties from localStorage");
       const parsed = JSON.parse(savedProperties);
-
-      // Filter out properties with invalid images
       const validProperties = parsed.filter(
         (p: Property) =>
           p.images && p.images.length > 0 && p.images[0].trim() !== "",
       );
-
       setProperties(validProperties);
     }
   }, []);
 
-  // Save to localStorage whenever properties change
+  // Save properties to localStorage
   function saveProperties(updatedProperties: Property[]) {
     setProperties(updatedProperties);
     localStorage.setItem(
@@ -138,18 +143,15 @@ export default function HomePage() {
   }
 
   // Filter properties based on search criteria
-  // Featured properties should appear first
   const filteredProperties = properties
     .filter((property) => {
       const cityMatch = !searchCity || property.city === searchCity;
       const priceMatch = !maxPrice || property.price <= parseInt(maxPrice);
       const bedroomsMatch =
         !minBedrooms || property.bedrooms >= parseInt(minBedrooms);
-
       return cityMatch && priceMatch && bedroomsMatch;
     })
     .sort((a, b) => {
-      // Featured properties first
       if (a.isFeatured && !b.isFeatured) return -1;
       if (!a.isFeatured && b.isFeatured) return 1;
       return 0;
@@ -158,13 +160,11 @@ export default function HomePage() {
   // Handle new property submission
   function handlePropertySubmit(propertyData: Property) {
     if (editingProperty) {
-      // Update existing property
       const updatedProperties = properties.map((p) =>
         p.id === propertyData.id ? propertyData : p,
       );
       saveProperties(updatedProperties);
     } else {
-      // Add new property
       const updatedProperties = [...properties, propertyData];
       saveProperties(updatedProperties);
     }
@@ -192,6 +192,19 @@ export default function HomePage() {
     setShowPostForm(true);
   }
 
+  // Toggle favorite
+  function handleToggleFavorite(propertyId: string) {
+    setFavorites((prev) => {
+      const isFavorited = prev.includes(propertyId);
+      const updated = isFavorited
+        ? prev.filter((id) => id !== propertyId)
+        : [...prev, propertyId];
+
+      localStorage.setItem("barnabasHomes_favorites", JSON.stringify(updated));
+      return updated;
+    });
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header
@@ -200,6 +213,8 @@ export default function HomePage() {
           setShowPostForm(true);
         }}
         onMyPropertiesClick={() => setShowMyProperties(true)}
+        onMyFavoritesClick={() => setShowFavorites(true)}
+        favoritesCount={favorites.length}
       />
 
       <SearchSection
@@ -223,6 +238,8 @@ export default function HomePage() {
         <PropertyGrid
           properties={filteredProperties}
           onViewDetails={setSelectedProperty}
+          favorites={favorites}
+          onToggleFavorite={handleToggleFavorite}
         />
       </section>
 
@@ -254,6 +271,16 @@ export default function HomePage() {
           onDelete={handleDeleteProperty}
           onToggleFeatured={handleToggleFeatured}
           onClose={() => setShowMyProperties(false)}
+        />
+      )}
+
+      {showFavorites && (
+        <MyFavorites
+          properties={properties}
+          favorites={favorites}
+          onViewDetails={setSelectedProperty}
+          onToggleFavorite={handleToggleFavorite}
+          onClose={() => setShowFavorites(false)}
         />
       )}
     </div>

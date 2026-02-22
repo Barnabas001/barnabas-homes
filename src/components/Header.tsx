@@ -3,11 +3,15 @@ import React from "react";
 interface HeaderProps {
   onPostPropertyClick: () => void;
   onMyPropertiesClick: () => void;
+  onMyFavoritesClick: () => void;
+  favoritesCount: number;
 }
 
-export default function Header({
+function Header({
   onPostPropertyClick,
   onMyPropertiesClick,
+  onMyFavoritesClick,
+  favoritesCount,
 }: HeaderProps) {
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
@@ -21,11 +25,24 @@ export default function Header({
           </div>
           <div className="flex gap-3">
             <button
+              onClick={onMyFavoritesClick}
+              className="relative px-5 py-2.5 text-gray-700 font-medium hover:bg-gray-100 rounded-lg transition"
+            >
+              ❤️ Favorites
+              {favoritesCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold">
+                  {favoritesCount}
+                </span>
+              )}
+            </button>
+
+            <button
               onClick={onMyPropertiesClick}
               className="hidden md:block px-5 py-2.5 text-gray-700 font-medium hover:bg-gray-100 rounded-lg transition"
             >
               My Properties
             </button>
+
             <button
               onClick={onPostPropertyClick}
               className="bg-green-600 text-white px-5 py-2.5 rounded-lg hover:bg-green-700 transition font-semibold shadow-md"
@@ -38,3 +55,5 @@ export default function Header({
     </header>
   );
 }
+
+export default Header;

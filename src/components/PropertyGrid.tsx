@@ -21,11 +21,15 @@ interface Property {
 interface PropertyGridProps {
   properties: Property[];
   onViewDetails: (property: Property) => void;
+  favorites?: string[];
+  onToggleFavorite?: (propertyId: string) => void;
 }
 
-export default function PropertyGrid({
+function PropertyGrid({
   properties,
   onViewDetails,
+  favorites = [],
+  onToggleFavorite,
 }: PropertyGridProps) {
   if (properties.length === 0) {
     return (
@@ -41,9 +45,16 @@ export default function PropertyGrid({
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {properties.map((property, index) => (
         <ScrollReveal key={property.id} delay={index * 100}>
-          <PropertyCard property={property} onViewDetails={onViewDetails} />
+          <PropertyCard
+            property={property}
+            onViewDetails={onViewDetails}
+            isFavorited={favorites.includes(property.id)}
+            onToggleFavorite={onToggleFavorite}
+          />
         </ScrollReveal>
       ))}
     </div>
   );
 }
+
+export default PropertyGrid;

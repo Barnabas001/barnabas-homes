@@ -19,11 +19,15 @@ interface Property {
 interface PropertyCardProps {
   property: Property;
   onViewDetails: (property: Property) => void;
+  isFavorited?: boolean;
+  onToggleFavorite?: (propertyId: string) => void;
 }
 
-export default function PropertyCard({
+function PropertyCard({
   property,
   onViewDetails,
+  isFavorited = false,
+  onToggleFavorite,
 }: PropertyCardProps) {
   function formatPrice(price: number) {
     return `₦${price.toLocaleString()}/year`;
@@ -34,16 +38,43 @@ export default function PropertyCard({
       {/* Property Image */}
       <div className="relative h-56 bg-gray-200 overflow-hidden">
         <img
-          src={property.images?.[0]}
+          src={property.images[0]}
           alt={property.title}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
         />
-        {property.isFeatured && (
-          <div className="absolute top-3 right-3 bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-sm font-bold shadow-lg">
-            ⭐ Featured
-          </div>
-        )}
-        <div className="absolute top-3 left-3 bg-white px-3 py-1 rounded-full text-sm font-semibold text-gray-700 shadow-md">
+
+        {/* Top row: Favorite + Featured */}
+        <div className="absolute top-3 left-3 right-3 flex justify-between items-start">
+          {/* Favorite button */}
+          {onToggleFavorite && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleFavorite(property.id);
+              }}
+              className="bg-white rounded-full p-2 shadow-lg hover:scale-110 transition-transform"
+              aria-label={
+                isFavorited ? "Remove from favorites" : "Add to favorites"
+              }
+            >
+              {isFavorited ? (
+                <span className="text-xl">❤️</span>
+              ) : (
+                <span className="text-xl">🤍</span>
+              )}
+            </button>
+          )}
+
+          {/* Featured badge */}
+          {property.isFeatured && (
+            <div className="bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-sm font-bold shadow-lg">
+              ⭐ Featured
+            </div>
+          )}
+        </div>
+
+        {/* Bottom: Property type */}
+        <div className="absolute bottom-3 left-3 bg-white px-3 py-1 rounded-full text-sm font-semibold text-gray-700 shadow-md">
           {property.propertyType}
         </div>
       </div>
@@ -83,3 +114,5 @@ export default function PropertyCard({
     </div>
   );
 }
+
+export default PropertyCard;
