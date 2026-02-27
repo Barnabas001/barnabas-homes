@@ -7,7 +7,7 @@ interface HeaderProps {
   favoritesCount: number;
 }
 
-function Header({
+export default function Header({
   onPostPropertyClick,
   onMyPropertiesClick,
   onMyFavoritesClick,
@@ -55,5 +55,3 @@ function Header({
     </header>
   );
 }
-
-export default Header;

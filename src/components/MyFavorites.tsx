@@ -25,7 +25,7 @@ interface MyFavoritesProps {
   onClose: () => void;
 }
 
-function MyFavorites({
+export default function MyFavorites({
   properties,
   favorites,
   onViewDetails,
@@ -95,5 +95,3 @@ function MyFavorites({
     </div>
   );
 }
-
-export default MyFavorites;
